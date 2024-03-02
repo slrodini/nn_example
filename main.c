@@ -81,8 +81,8 @@ input_parameters_t *init_input_parameters(const char fn[])
    return in_par;
 }
 
-static double sin_loc(double x) { return x * x * x; }
-static double cos_loc(double x) { return x * x * 3; }
+static double sin_loc(double x) { return sin(x * x); }
+static double cos_loc(double x) { return 2 * x * cos(x * x); }
 
 static double dsign(double x) { return (0 < x) - (x < 0); }
 

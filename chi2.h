@@ -15,7 +15,7 @@ extern "C" {
 #include <error_codes.h>
 #include <annealing.h>
 #include <gsl/gsl_multifit_nlinear.h>
-#define NDATA 20
+#define NDATA 25
 
 typedef struct {
    double *data, *x, *y;
