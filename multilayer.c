@@ -169,9 +169,10 @@ void multil_EvaluateParGradient(multilayer_t *net, double *x)
    double sigma_vec[net->maxNH];
    double sigmaTemp_vec[net->maxNH];
    for (int32_t i = 0; i < net->nO; i++) {
-      for (int32_t f = 0; f < net->maxNH; f++) {
-         sigma_vec[f] = 0.0;
-      }
+      memset(sigma_vec, 0, sizeof(double) * net->maxNH);
+      // for (int32_t f = 0; f < net->maxNH; f++) {
+      //    sigma_vec[f] = 0.0;
+      // }
       sigma_vec[i] = 1.0;
 
       for (int32_t L = net->nL - 1; L > 0; L--) {
@@ -196,9 +197,10 @@ void multil_EvaluateParGradient(multilayer_t *net, double *x)
                sigmaTemp_vec[l] += sigma_vec[j] * Wjk(j, l, L, net) * net->sd_li[L][j];
             }
          }
-         for (int32_t j = 0; j < net->arch[L - 1]; j++) {
-            sigma_vec[j] = sigmaTemp_vec[j];
-         }
+         // for (int32_t j = 0; j < net->arch[L - 1]; j++) {
+         //    sigma_vec[j] = sigmaTemp_vec[j];
+         // }
+         memcpy(sigma_vec, sigmaTemp_vec, sizeof(double) * net->arch[L - 1]);
       }
    }
 }

@@ -81,8 +81,8 @@ input_parameters_t *init_input_parameters(const char fn[])
    return in_par;
 }
 
-static double sin_loc(double x) { return sin(x * x); }
-static double cos_loc(double x) { return 2 * x * cos(x * x); }
+static double sin_loc(double x) { return sin(x); }
+static double cos_loc(double x) { return cos(x); }
 
 static double dsign(double x) { return (0 < x) - (x < 0); }
 
@@ -113,7 +113,7 @@ int main()
    }
    for (size_t i = 0; i < NDATA; i++) {
       for (size_t j = 0; j < NDATA; j++) {
-         f[i + j * NDATA] = sin(3 * x[i] * x[i] * y[j] * 2 * M_PI);
+         f[i + j * NDATA] = sin(3 * x[i] * y[j] * 2 * M_PI);
       }
    }
 
