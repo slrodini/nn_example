@@ -10,14 +10,14 @@
 #include <chi2.h>
 
 typedef struct {
-   int32_t n_layer;
-   int32_t *nodes_per_layer;
+   size_t n_layer;
+   size_t *nodes_per_layer;
 } input_parameters_t;
 
 void supply_default_parameters(input_parameters_t *in_par)
 {
    in_par->n_layer = 3;
-   in_par->nodes_per_layer = (int32_t *)calloc(in_par->n_layer, sizeof(int32_t));
+   in_par->nodes_per_layer = (size_t *)calloc(in_par->n_layer, sizeof(size_t));
    // in_par->nodes_per_layer = (int32_t[]){1, 10, 1};
    in_par->nodes_per_layer[0] = 1;
    in_par->nodes_per_layer[1] = 10;
@@ -30,7 +30,7 @@ input_parameters_t *init_input_parameters(const char fn[])
    in_par->nodes_per_layer = NULL;
    supply_default_parameters(in_par);
 
-   nn_conf_append_option("n_layer", INTEGER);
+   nn_conf_append_option("n_layer", U_LONG);
    nn_conf_append_option("nodes_per_layer", STRING);
 
    void *(par_local[2]);
@@ -46,22 +46,22 @@ input_parameters_t *init_input_parameters(const char fn[])
 
    if (in_par->n_layer <= 2) nn_log(NN_ERROR, "Too few layers, at least specify three = {input, hidden, output}.");
 
-   in_par->nodes_per_layer = realloc(in_par->nodes_per_layer, in_par->n_layer * sizeof(int32_t));
+   in_par->nodes_per_layer = realloc(in_par->nodes_per_layer, in_par->n_layer * sizeof(size_t));
 
    char delimiter[] = "|\n";
    char *token;
 
-   int32_t count = 0;
+   size_t count = 0;
 
    token = strtok(NperL, delimiter);
-   sscanf(token, "%d", &in_par->nodes_per_layer[count]);
+   sscanf(token, "%ld", &in_par->nodes_per_layer[count]);
    count++;
 
    // using loop to get the rest of the token
    while (token != NULL && count < in_par->n_layer) {
       token = strtok(NULL, delimiter);
       if (token) {
-         sscanf(token, "%d", &in_par->nodes_per_layer[count]);
+         sscanf(token, "%ld", &in_par->nodes_per_layer[count]);
          count++;
       }
    }
@@ -70,7 +70,7 @@ input_parameters_t *init_input_parameters(const char fn[])
    if (((token == NULL) && count < in_par->n_layer) || (token != NULL && count >= in_par->n_layer)) {
       nn_log(NN_WARNING, "An error occurred in reading the number of nodes per layer.");
       nn_log(NN_WARNING, "Please ensure that the number of entries is consistent with the declared n_layer. I read:");
-      for (int32_t j = 0; j < count; j++)
+      for (size_t j = 0; j < count; j++)
          nn_log(NN_WARNING, "%d", in_par->nodes_per_layer[j]);
       nn_log(NN_ERROR, "Aborting...");
    }
@@ -93,7 +93,7 @@ int main()
 {
    input_parameters_t *in_par = init_input_parameters("config.in");
    nn_log(NN_INFO, "n_layer: %d", in_par->n_layer);
-   for (int32_t j = 0; j < in_par->n_layer; j++)
+   for (size_t j = 0; j < in_par->n_layer; j++)
       nn_log(NN_INFO, "layer: %d\t# of nodes: %d", j, in_par->nodes_per_layer[j]);
 
    multilayer_t net = multil_init_net(in_par->n_layer, in_par->nodes_per_layer);
@@ -119,10 +119,10 @@ int main()
 
    local_data_t loc_d = {.data = f, .x = x, .y = y, .nn = &net, .n = n_data};
 
-   double **cov;
+   // double **cov;
 
    // double chimin = leastsq(net.par, net.nPar, NDATA, (void *)&loc_d, 1, d_chi2_gsl, &cov);
-   double chimin = minimize2(net.par, net.nPar, (void *)&loc_d, chi, chi_d_chi);
+   (void)minimize2(net.par, net.nPar, (void *)&loc_d, chi, chi_d_chi);
 
    FILE *fp = fopen("nn.dat", "w");
    double in[2] = {0, 0};

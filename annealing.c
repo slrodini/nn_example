@@ -13,16 +13,16 @@ double annealing(double *par, size_t n_par, double *parErr, void *addPar, double
    int64_t idum = -2;
    double T = anPar->Tin;
    double Tfin = anPar->Tfin;
-   int32_t nIter = anPar->nIter; // Iteration at fixed T
+   size_t nIter = anPar->nIter; // Iteration at fixed T
    double dt = anPar->dt;
 
    double best_x[n_par];
    double pErr[n_par];
    if (parErr == NULL) {
-      for (int32_t i = 0; i < n_par; i++)
+      for (size_t i = 0; i < n_par; i++)
          pErr[i] = 1.0;
    } else {
-      for (int32_t i = 0; i < n_par; i++)
+      for (size_t i = 0; i < n_par; i++)
          pErr[i] = parErr[i];
    }
    double E, new_E, best_E;
@@ -34,34 +34,32 @@ double annealing(double *par, size_t n_par, double *parErr, void *addPar, double
 
    best_E = E;
 
-   int32_t count = 0;
+   size_t count = 0;
 
    double ranVal[nIter], ranValVar[nIter];
-   int32_t indexes[nIter];
+   size_t indexes[nIter];
    double (*rFunc[n_par])(int64_t *);
 
-   int32_t save = 0;
-
    if (NN_RM_UNIFORM == ran_mode) {
-      for (int32_t i = 0; i < n_par; i++) {
+      for (size_t i = 0; i < n_par; i++) {
          rFunc[i] = ran2U;
       }
    } else {
-      for (int32_t i = 0; i < n_par; i++) {
+      for (size_t i = 0; i < n_par; i++) {
          rFunc[i] = nn_ran2N;
       }
    }
 
    while (1) {
-      for (int32_t i = 0; i < nIter; i++) {
-         indexes[i] = (int32_t)(n_par * nn_ran2(&idum));
+      for (size_t i = 0; i < nIter; i++) {
+         indexes[i] = (size_t)(n_par * nn_ran2(&idum));
          ranVal[i] = nn_ran2(&idum);
          ranValVar[i] = rFunc[indexes[i]](&idum) * pErr[indexes[i]];
       }
-      printf("Iteration: %d Temperature: %.6e Energy: %.6e\n", count, T, E);
+      printf("Iteration: %ld Temperature: %.6e Energy: %.6e\n", count, T, E);
 
-      for (int32_t i = 0; i < nIter; i++) {
-         int32_t index = indexes[i];
+      for (size_t i = 0; i < nIter; i++) {
+         size_t index = indexes[i];
          double u = ranValVar[i];
          par[index] = u + par[index];
 

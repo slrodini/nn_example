@@ -38,14 +38,14 @@ double nn_adamax(double min_var[], size_t n_par, void *extra_par, void (*fgrad)(
       fgrad(min_var, n_par, extra_par, &old_chi, gt);
 
       grad_norm = 0.0;
-      for (int32_t i = 0; i < n_par; i++) {
+      for (size_t i = 0; i < n_par; i++) {
          grad_norm += fabsl(gt[i]);
       }
 
-      // fprintf(stderr, "Iteration: %d\tcurrent_chi2: %.4e\tcurrent_grad: %.4e\n", (int32_t)t, old_chi, grad_norm);
+      // fprintf(stderr, "Iteration: %d\tcurrent_chi2: %.4e\tcurrent_grad: %.4e\n", (size_t)t, old_chi, grad_norm);
 
       double temp = alpha / (1.0 - pow(beta1, t));
-      for (int32_t i = 0; i < n_par; i++) {
+      for (size_t i = 0; i < n_par; i++) {
          mt[i] = beta1 * mt[i] + (1.0 - beta1) * gt[i];
          ut[i] = (beta2 * ut[i] > fabsl(gt[i])) ? beta2 * ut[i] : fabsl(gt[i]);
          double change = -temp * mt[i] / (ut[i] + EPS_ADAM);
@@ -70,7 +70,7 @@ double nn_adam2(double min_var[], size_t n_par, void *extra_par, void (*fgrad)(d
 
    double mt[n_par], vt[n_par], gt[n_par];
 
-   for (int32_t i = 0; i < n_par; i++) {
+   for (size_t i = 0; i < n_par; i++) {
       mt[i] = 0;
       vt[i] = 0;
       gt[i] = 0;
@@ -92,16 +92,16 @@ double nn_adam2(double min_var[], size_t n_par, void *extra_par, void (*fgrad)(d
       fgrad(min_var, n_par, extra_par, &old_chi, gt);
 
       grad_norm = 0.0;
-      for (int32_t i = 0; i < n_par; i++) {
+      for (size_t i = 0; i < n_par; i++) {
          grad_norm += gt[i] * gt[i];
       }
       grad_norm = sqrt(grad_norm);
-      fprintf(stderr, "adam2 Iter: %4d  cur_chi2: %.4e  cur_grad: %.4e\n", (int32_t)t, old_chi, grad_norm);
+      fprintf(stderr, "adam2 Iter: %4ld  cur_chi2: %.4e  cur_grad: %.4e\n", (size_t)t, old_chi, grad_norm);
 
       double temp1 = 1.0 / (1.0 - pow(beta1, t));
       double temp2 = 1.0 / (1.0 - pow(beta2, t));
 
-      for (int32_t i = 0; i < n_par; i++) {
+      for (size_t i = 0; i < n_par; i++) {
 
          mt[i] = beta1 * mt[i] + (1.0 - beta1) * gt[i];
          vt[i] = beta2 * vt[i] + (1.0 - beta2) * gt[i] * gt[i];

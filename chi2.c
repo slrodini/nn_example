@@ -2,6 +2,7 @@
 
 void chi_d_chi(double *par, size_t npar, void *extrapar, double *chi, double *grad)
 {
+   (void)par;
    local_data_t *data = (local_data_t *)extrapar;
    multilayer_t *nn = (multilayer_t *)data->nn;
 
@@ -33,6 +34,8 @@ void chi_d_chi(double *par, size_t npar, void *extrapar, double *chi, double *gr
 
 double chi(double *par, size_t npar, void *extrapar)
 {
+   (void)par;
+   (void)npar;
    local_data_t *data = (local_data_t *)extrapar;
    multilayer_t *nn = (multilayer_t *)data->nn;
 

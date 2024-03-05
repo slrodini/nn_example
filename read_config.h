@@ -32,7 +32,7 @@ void nn_clear_sstream(nn_string_stream_t *str);
 void nn_free_scontainer(nn_string_container_t **tokens);
 void nn_free_content_scontainer(nn_string_container_t *tokens);
 
-typedef enum { INTEGER = 0, FLOAT, EXPONENTIAL, STRING } nn_input_format_e;
+typedef enum { INTEGER = 0, U_LONG, FLOAT, EXPONENTIAL, STRING } nn_input_format_e;
 
 void nn_reset_read_config();
 void nn_conf_append_option(const char options_local[], nn_input_format_e fmt);

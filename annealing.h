@@ -10,7 +10,7 @@ extern "C" {
 
 typedef struct {
    double Tin, Tfin, dt;
-   int32_t nIter;
+   size_t nIter;
 } nn_annealing_par_t;
 
 typedef enum { NN_RM_UNIFORM, NN_RM_NORMAL } nn_ran_mode_e;

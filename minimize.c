@@ -42,7 +42,7 @@ double minimize2(double *par, int32_t nPar, void *addPar, double (*fnc)(double *
                  void (*fgrad)(double[], size_t, void *, double *, double *))
 {
    nn_annealing_par_t ann_par = {.dt = 0.92, .nIter = 100, .Tin = 1000, .Tfin = 0.001};
-   double chifoo = annealing(par, nPar, NULL, addPar, fnc, &ann_par, NN_RM_NORMAL);
+   (void)annealing(par, nPar, NULL, addPar, fnc, &ann_par, NN_RM_NORMAL);
    // return chifoo;
    nn_adam_parameters_t aP;
 

@@ -175,8 +175,7 @@ void nn_clear_sstream(nn_string_stream_t *str)
 void nn_free_scontainer(nn_string_container_t **tokens)
 {
    if (NULL == (*tokens)) nn_log(NN_ERROR, "Trying to free NULL string container.");
-   if (NULL == (*tokens)->content && (*tokens)->size != 0)
-      nn_log(NN_ERROR, "Trying to clear NULL string container content when size is not zero.");
+   if (NULL == (*tokens)->content && (*tokens)->size != 0) nn_log(NN_ERROR, "Trying to clear NULL string container content when size is not zero.");
    if ((*tokens)->size > 0) {
       for (size_t i = 0; i < (*tokens)->count; i++)
          nn_free_sstream(&((*tokens)->content[i]));
@@ -252,12 +251,22 @@ void nn_conf_append_option(const char options_local[], nn_input_format_e fmt)
 
 static int8_t nn_check_number_nonsense(size_t opt, nn_string_stream_t *tk, nn_input_format_e fmt)
 {
+   (void)opt;
    // Check whether a given token has the correct number format
    switch (fmt) {
    case INTEGER: {
       for (size_t i = 0; i < tk->count; i++) {
          if (tk->content[i] == '\0') continue;
-         if (CHECK_NOT_NUM(tk->content, i) && tk->content[0] != '+') {
+         if (CHECK_NOT_NUM(tk->content, i) && tk->content[0] != '+' && tk->content[0] != '-') {
+            return 1;
+         }
+      }
+      break;
+   }
+   case U_LONG: {
+      for (size_t i = 0; i < tk->count; i++) {
+         if (tk->content[i] == '\0') continue;
+         if (CHECK_NOT_NUM(tk->content, i)) {
             return 1;
          }
       }
@@ -384,6 +393,16 @@ static void nn_fill_variable(size_t opt, nn_string_stream_t *tk, void *value)
          nn_log(NN_INFO, "Resorting to default value, see `config.out\'");
          return;
       }
+   } else if (options_types[opt] == U_LONG) {
+      is_not_ok = nn_check_number_nonsense(opt, tk, U_LONG);
+      if (is_not_ok) {
+         nn_log(NN_INFO,
+                "Something wrong in the format for %s. Expected an "
+                "usigned integer number, instead found <<%s>>",
+                options->content[opt]->content, tk->content);
+         nn_log(NN_INFO, "Resorting to default value, see `config.out\'");
+         return;
+      }
    }
 
    found_option[opt] = true;
@@ -393,6 +412,13 @@ static void nn_fill_variable(size_t opt, nn_string_stream_t *tk, void *value)
       int32_t *location = (int32_t *)value;
       if (NULL == location) nn_log(NN_ERROR, "Trying to write integer to NULL location.");
       *location = atoi(tk->content);
+      break;
+   }
+   case U_LONG: {
+      size_t *location = (size_t *)value;
+      if (NULL == location) nn_log(NN_ERROR, "Trying to write unsigned integer to NULL location.");
+      // *location = atoi(tk->content);
+      sscanf(tk->content, "%ld", location);
       break;
    }
    case FLOAT: {
