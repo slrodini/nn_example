@@ -190,13 +190,12 @@ void multil_EvaluateParGradient(multilayer_t *net, double *x)
          }
 
          for (size_t l = 0; l < arch[L - 1]; l++) {
-            double temp = 0;
-#pragma omp simd reduction(+ : temp)
+            sigmaTemp_vec[l] = 0;
             for (size_t j = 0; j < arch[L]; j++) {
-               temp += sigma_vec[j] * Wjk(j, l, L, net) * net->sd_li[L][j];
+               sigmaTemp_vec[l] += sigma_vec[j] * Wjk(j, l, L, net) * net->sd_li[L][j];
             }
-            sigmaTemp_vec[l] = temp;
          }
+
          memcpy(sigma_vec, sigmaTemp_vec, sizeof(double) * arch[L - 1]);
       }
    }
