@@ -2,8 +2,8 @@
 #include <network.h>
 #include <ran2.h>
 
-static double loc_sigma(double x) { return tanh(x * 0.5); }
-static double loc_sigma_d(double x) { return 1.0 / (1.0 + cosh(x)); }
+static double loc_sigma(double x) { return fabs(x); }
+static double loc_sigma_d(double x) { return (0 < x) - (x < 0); }
 
 static double loc_id(double x) { return x; }
 static double loc_id_d(double x)
@@ -155,16 +155,16 @@ void multil_Evaluate(multilayer_t *net, double *x)
    double temp = 0;
    for (size_t L = 1; L < net->nL; L++) {
       for (size_t j = 0; j < net->arch[L]; j++) {
-         temp = 0.0;
+         temp = Bj(j, L, net);
          for (size_t k = 0; k < net->arch[L - 1]; k++) {
             temp += net->s_li[L - 1][k] * Wjk(j, k, L, net);
          }
-         temp += Bj(j, L, net);
          net->s_li[L][j] = net->act_fun[L](temp);
          net->sd_li[L][j] = net->d_act_fun[L](temp);
       }
    }
 }
+
 void multil_EvaluateParGradient(multilayer_t *net, double *x)
 {
    // size_t count = 0;
@@ -172,33 +172,32 @@ void multil_EvaluateParGradient(multilayer_t *net, double *x)
    double *sigma_vec = net->sigma_vec;
    double *sigmaTemp_vec = net->sigmaTemp_vec;
 
-   memset(sigma_vec, 0, sizeof(double) * net->maxNH);
-   memset(sigmaTemp_vec, 0, sizeof(double) * net->maxNH);
+   size_t *arch = net->arch;
 
    for (size_t i = 0; i < net->nO; i++) {
+      size_t out_offset = i * net->nPar;
+
       memset(sigma_vec, 0, sizeof(double) * net->maxNH);
       sigma_vec[i] = 1.0;
-
       for (size_t L = net->nL - 1; L > 0; L--) {
-
-         for (size_t j = 0; j < net->arch[L]; j++) {
-            size_t index = net->offsetB[L - 1] + i * (net->nPar) + j;
+         for (size_t j = 0; j < arch[L]; j++) {
+            size_t index = net->offsetB[L - 1] + out_offset + j;
             net->parGrad[index] = sigma_vec[j] * net->sd_li[L][j];
 
-            for (size_t k = 0; k < net->arch[L - 1]; k++) {
-               index = net->offsetW[L - 1] + i * (net->nPar) + k + (net->arch[L - 1]) * j;
-               net->parGrad[index] = sigma_vec[j] * net->sd_li[L][j] * net->s_li[L - 1][k];
-            }
+            size_t temp = net->offsetW[L - 1] + out_offset + (arch[L - 1]) * j;
+            for (size_t k = 0; k < arch[L - 1]; k++)
+               net->parGrad[k + temp] = sigma_vec[j] * net->sd_li[L][j] * net->s_li[L - 1][k];
          }
 
-         for (size_t l = 0; l < net->arch[L - 1]; l++) {
-            sigmaTemp_vec[l] = 0.0;
-            for (size_t j = 0; j < net->arch[L]; j++) {
-               sigmaTemp_vec[l] += sigma_vec[j] * Wjk(j, l, L, net) * net->sd_li[L][j];
+         for (size_t l = 0; l < arch[L - 1]; l++) {
+            double temp = 0;
+#pragma omp simd reduction(+ : temp)
+            for (size_t j = 0; j < arch[L]; j++) {
+               temp += sigma_vec[j] * Wjk(j, l, L, net) * net->sd_li[L][j];
             }
+            sigmaTemp_vec[l] = temp;
          }
-
-         memcpy(sigma_vec, sigmaTemp_vec, sizeof(double) * net->arch[L - 1]);
+         memcpy(sigma_vec, sigmaTemp_vec, sizeof(double) * arch[L - 1]);
       }
    }
 }
@@ -208,6 +207,3 @@ void multil_FullEvaluate(multilayer_t *net, double *x)
    multil_Evaluate(net, x);
    multil_EvaluateParGradient(net, x);
 }
-
-double multil_get_grad(size_t out, size_t par, multilayer_t *net) { return net->parGrad[out * net->nPar + par]; }
-double multil_get(size_t out, multilayer_t *net) { return net->s_li[net->nL - 1][out]; }

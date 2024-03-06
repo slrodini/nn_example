@@ -84,6 +84,9 @@ input_parameters_t *init_input_parameters(const char fn[])
 static double sin_loc(double x) { return sin(x); }
 static double cos_loc(double x) { return cos(x); }
 
+static double power_loc(double x) { return x * x; }
+static double power_d_loc(double x) { return 2 * x; }
+
 static double dsign(double x) { return (0 < x) - (x < 0); }
 
 static double one_o_x_loc(double x) { return 1 / (fabs(x) + 1e-10); }
@@ -99,7 +102,7 @@ int main()
    multilayer_t net = multil_init_net(in_par->n_layer, in_par->nodes_per_layer);
    nn_log(NN_INFO, "%d", net.nPar);
 
-   // multil_set_act_layer(4, &net, &sin_loc, &cos_loc);
+   multil_set_act_layer(1, &net, &power_loc, &power_d_loc);
    multil_set_act_layer(in_par->n_layer - 1, &net, sin_loc, cos_loc);
 
    size_t n_data = NDATA * NDATA;
@@ -131,6 +134,7 @@ int main()
       for (size_t j = 0; j < NDATA; j++) {
          in[0] = x[i];
          in[1] = y[j];
+         // in[0] = y[j] * x[i];
          multil_Evaluate(&net, in);
          fprintf(fp, "%le\t%le\t%le\t%le\n", x[i], y[j], f[i + j * NDATA], multil_get(0, &net));
       }

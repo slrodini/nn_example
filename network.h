@@ -45,8 +45,8 @@ void multil_Evaluate(multilayer_t *net, double *x);
 void multil_EvaluateParGradient(multilayer_t *net, double *x);
 void multil_FullEvaluate(multilayer_t *net, double *x);
 
-double multil_get_grad(size_t out, size_t par, multilayer_t *net);
-double multil_get(size_t out, multilayer_t *net);
+inline double multil_get_grad(size_t out, size_t par, multilayer_t *net) { return net->parGrad[out * net->nPar + par]; }
+inline double multil_get(size_t out, multilayer_t *net) { return net->s_li[net->nL - 1][out]; }
 
 #endif
 

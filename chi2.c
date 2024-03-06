@@ -16,15 +16,15 @@ void chi_d_chi(double *par, size_t npar, void *extrapar, double *chi, double *gr
       int32_t jj = i / NDATA;
       inputs[0] = data->x[ii];
       inputs[1] = data->y[jj];
+      // inputs[0] = data->y[jj] * data->x[ii];
 
       multil_FullEvaluate(nn, inputs);
 
       double fi = multil_get(0, nn) - data->data[i];
       *chi += fi * fi;
-      for (size_t j = 0; j < npar; j++) {
-         double temp = multil_get_grad(0, j, nn);
-         grad[j] += fi * temp;
-      }
+#pragma omp simd
+      for (size_t j = 0; j < npar; j++)
+         grad[j] += fi * multil_get_grad(0, j, nn);
    }
    for (size_t j = 0; j < npar; j++)
       grad[j] *= 2;
@@ -48,6 +48,7 @@ double chi(double *par, size_t npar, void *extrapar)
       int32_t jj = i / NDATA;
       inputs[0] = data->x[ii];
       inputs[1] = data->y[jj];
+      // inputs[0] = data->y[jj] * data->x[ii];
       multil_Evaluate(nn, inputs);
       double fi = multil_get(0, nn) - data->data[i];
       res += fi * fi;

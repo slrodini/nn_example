@@ -1,2 +1,2 @@
-n_layer 7
-nodes_per_layer 2|5|10|10|10|5|1
+n_layer 4
+nodes_per_layer 2|25|25|1
