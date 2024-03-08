@@ -142,9 +142,12 @@ void multil_free_net(multilayer_t *net)
    free(net->sd_li);
 }
 
-static inline double Wjk(size_t j, size_t k, size_t L, multilayer_t *net) { return net->par[net->offsetW[L - 1] + k + (net->arch[L - 1]) * j]; }
+// static inline double Wjk(size_t j, size_t k, size_t L, multilayer_t *net) { return net->par[net->offsetW[L - 1] + k + (net->arch[L - 1]) * j]; }
 
-static inline double Bj(size_t j, size_t L, multilayer_t *net) { return net->par[net->offsetB[L - 1] + j]; }
+// static inline double Bj(size_t j, size_t L, multilayer_t *net) { return net->par[net->offsetB[L - 1] + j]; }
+
+#define Wjk(j, k, L, net) (net)->par[(net)->offsetW[(L)-1] + (k) + ((net)->arch[(L)-1]) * (j)]
+#define Bj(j, L, net) (net)->par[(net)->offsetB[(L)-1] + (j)]
 
 void multil_Evaluate(multilayer_t *net, double *x)
 {

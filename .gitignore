@@ -1,4 +1,17 @@
-/.vscode
-/*.dat
-/*.elf
-/*.o
+/Code/.vscode
+/Code/*.dat
+/Code/*.elf
+/Code/*.o
+
+# LaTeX temporary files
+/Notes/*.aux
+/Notes/*.log
+/Notes/*.toc
+
+# PDF output - usually a bad idea to keep this in Git
+/Notes/*.pdf
+/Notes/*.gz
+
+# BibTeX
+/Notes/*.bbl
+/Notes/*.blg
