@@ -15,3 +15,7 @@
 # BibTeX
 /Notes/*.bbl
 /Notes/*.blg
+
+# rust 
+/rust/target
+/rust/Cargo.lock
