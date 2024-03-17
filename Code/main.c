@@ -92,15 +92,31 @@ static double dsign(double x) { return (0 < x) - (x < 0); }
 static double one_o_x_loc(double x) { return 1 / (fabs(x) + 1e-10); }
 static double one_o_x_d_loc(double x) { return -dsign(x) / pow(fabs(x) + 1e-10, 2); }
 
+int main_2(void);
 int main()
 {
+   main_2();
+   fprintf(stderr, "Finished...");
+    double foo  =1;
+   return 0;
+}
+
+int main_2(void)
+{
    input_parameters_t *in_par = init_input_parameters("config.in");
-   nn_log(NN_INFO, "n_layer: %d", in_par->n_layer);
-   for (size_t j = 0; j < in_par->n_layer; j++)
-      nn_log(NN_INFO, "layer: %d\t# of nodes: %d", j, in_par->nodes_per_layer[j]);
 
    multilayer_t net = multil_init_net(in_par->n_layer, in_par->nodes_per_layer);
+
+   nn_log(NN_INFO, "n_layer: %d", net.nL);
+   for (size_t j = 0; j < net.nL; j++)
+      nn_log(NN_INFO, "layer: %d\t# of nodes: %d", j, net.arch[j]);
+
    nn_log(NN_INFO, "%d", net.nPar);
+
+   // for (size_t i = 0; i < net.nL - 1; i++) {
+   //    nn_log(NN_INFO, "Offsets %ld:\t B: %ld\t W: %ld", i, net.offsetB[i], net.offsetW[i]);
+   // }
+   // exit(0);
 
    multil_set_act_layer(1, &net, &power_loc, &power_d_loc);
    multil_set_act_layer(in_par->n_layer - 1, &net, sin_loc, cos_loc);

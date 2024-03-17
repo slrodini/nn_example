@@ -14,7 +14,6 @@ extern "C" {
 #include <ran2.h>
 #include <error_codes.h>
 #include <annealing.h>
-#include <gsl/gsl_multifit_nlinear.h>
 #define NDATA 25
 
 typedef struct {

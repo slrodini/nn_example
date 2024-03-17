@@ -15,7 +15,11 @@ extern "C" {
 #include <signal.h>
 #include <stdarg.h>
 #include <stdbool.h>
+#ifdef __linux__
 #include <unistd.h>
+#else
+#include<io.h>
+#endif
 #include <time.h>
 #include <useful_constants.h>
 #include <error_codes.h>
@@ -36,7 +40,7 @@ extern "C" {
 
 #define _max3_(a, b, c) _max_((a), _max_((b), (c)))
 #define _min3_(a, b, c) _min_((a), _min_((b), (c)))
-#elif
+#else
 #define _max_(a, b) ((a) > (b) ? (a) : (b))
 #define _min_(a, b) ((a) < (b) ? (a) : (b))
 #define _max3_(a, b, c) (_max_((a), _max_((b), (c))))

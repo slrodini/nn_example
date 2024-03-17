@@ -33,7 +33,7 @@ typedef struct {
 
 // multilayer_t functions
 
-size_t multil_getNpar(size_t nL, size_t *arch);
+// size_t multil_getNpar(size_t nL, size_t *arch);
 multilayer_t multil_init_net(size_t nL, size_t *arch);
 void multil_set_act(multilayer_t *net, multiL_act *activ, multiL_act *d_activ);
 void multil_set_act_layer(size_t layer, multilayer_t *net, multiL_act activ, multiL_act d_activ);
