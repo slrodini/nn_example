@@ -12,9 +12,16 @@
 /Notes/*.pdf
 /Notes/*.gz
 
-# BibTeX
+# BibTeX & Beamer temp files
 /Notes/*.bbl
 /Notes/*.blg
+/Notes/*.nav
+/Notes/*.snm
+/Notes/*.out
+/Notes/*.fdb*
+/Notes/*.fls
+
+
 
 # rust 
 /rust/target
