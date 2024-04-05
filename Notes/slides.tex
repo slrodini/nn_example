@@ -1,6 +1,5 @@
 \documentclass[10pt]{beamer}
 \usepackage[utf8]{inputenc}
-\usepackage{xeCJK}
 \usepackage{graphicx}
 \usepackage {mathtools}
 \usepackage{utopia} %font utopia imported
@@ -19,6 +18,144 @@
 \setbeamercolor*{item}{fg=myNewColorA}
 \setbeamercolor*{caption name}{fg=myNewColorA}
 \setbeamercolor{frametitle}{fg=myNewColorC}
+
+\usepackage{braket}
+\usepackage{amssymb}
+\usepackage{dutchcal}
+\usepackage{ifsym}
+\usepackage[T1]{fontenc} % if needed
+\usepackage{bm}
+\usepackage{bbm}
+\usepackage{slashed}
+\usepackage{dashrule}
+\usepackage{pifont}
+
+\newcommand{\ds}[1]{\slashed{#1}}
+
+\usepackage{graphicx}%
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{patterns}
+\usetikzlibrary{calc}
+\usetikzlibrary{math}
+\usetikzlibrary{fpu}
+\usepackage{standalone}
+\usepackage{pgffor}
+\usepackage{booktabs} % for '\midrule' macro
+\usepackage{amsmath}  % for '\overset' macro
+%\usepackage{newpxmath,newpxtext}
+
+\usepackage{hhline}
+
+\usepackage{parskip}
+
+% Mathematica code
+\usepackage{lmodern}
+\usepackage{mmacells}
+% --------------------------------------------------
+% Color packages and definitions
+\usepackage[most]{tcolorbox}
+\usepackage{xcolor}
+\definecolor{myGreen}{rgb}{0.2,0.72,0.2}
+\definecolor{myWhite}{rgb}{0.98,0.98,0.98}
+\definecolor{myGray}{rgb}{0.7,0.7,0.75}
+\definecolor{myGold}{rgb}{0.8,0.64,0.24}
+\definecolor{myYellow}{rgb}{1.0,1.0,0.69}
+\newcommand{\new}[1]{{\sf\color{red}{#1}}}
+\newcommand{\green}[1]{\textcolor{myGreen}{#1}}
+\newcommand{\red}[1]{\textcolor{red}{#1}}
+\newcommand{\blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\white}[1]{\textcolor{myWhite}{#1}}
+\newcommand{\gold}[1]{\textcolor{myGold}{#1}}
+% \renewcommand{\section}[1]{\newpage\section{{#1}}}
+% --------------------------------------------------
+
+% --------------------------------------------------
+% Custom comands
+\DeclareMathOperator*{\SumInt}{%
+\mathchoice%
+  {\ooalign{$\displaystyle\sum$\cr\hidewidth$\displaystyle\int$\hidewidth\cr}}
+  {\ooalign{\raisebox{.14\height}{\scalebox{.7}{$\textstyle\sum$}}\cr\hidewidth$\textstyle\int$\hidewidth\cr}}
+  {\ooalign{\raisebox{.2\height}{\scalebox{.6}{$\scriptstyle\sum$}}\cr$\scriptstyle\int$\cr}}
+  {\ooalign{\raisebox{.2\height}{\scalebox{.6}{$\scriptstyle\sum$}}\cr$\scriptstyle\int$\cr}}
+}
+
+\newcommand\myfontsize{\fontsize{8pt}{9.6pt}\selectfont}
+\newcommand\smallfonteq{\fontsize{9pt}{10.8pt}\selectfont}
+
+\newcommand{\highlight}[1]{\colorbox{myYellow}{\text{${#1}$}}}
+
+\newcommand{\ok}{\green{\ding{51}}}
+\newcommand{\wrong}{\red{\ding{55}}}
+\newcommand{\semidone}{\ding{122}}
+\newcommand{\todo}{$\square$}
+
+\newcommand{\sign}{\text{sign}}
+
+
+\newcommand{\et}{\varepsilon_{T}}
+\newcommand{\vetp}[1]{\bm{#1}_{T}}
+\newcommand{\xup}{x_{123},\vetp{b}}
+\newcommand{\xdo}{x_{321},\vetp{b}}
+\newcommand{\e}{\varepsilon}
+\newcommand{\ta}{\left(}
+\newcommand{\qa}{\left[}
+\newcommand{\ga}{\left\{}
+\newcommand{\tc}{\right)}
+\newcommand{\qc}{\right]}
+\newcommand{\gc}{\right\}}
+\newcommand{\tr}[1]{\text{Tr}\qa {#1} \qc}
+\renewcommand{\[}{\begin{equation}}
+\renewcommand{\]}{\end{equation}}
+\newcommand{\nb}{{\bar{n}}}
+
+
+% Mathematica code stuff
+
+\mmaDefineMathReplacement[≤]{<=}{\leq}
+\mmaDefineMathReplacement[≥]{>=}{\geq}
+\mmaDefineMathReplacement[≠]{!=}{\neq}
+\mmaDefineMathReplacement[→]{->}{\to}[2]
+\mmaDefineMathReplacement[⧴]{:>}{:\hspace{-.2em}\to}[2]
+\mmaDefineMathReplacement{∉}{\notin}
+\mmaDefineMathReplacement{∞}{\infty}
+\mmaDefineMathReplacement{��}{\mathbbm{d}}
+
+\mmaSet{
+  morefv={gobble=2},
+  linklocaluri=mma/symbol/definition:#1,
+  morecellgraphics={yoffset=1.9ex}
+}
+
+% new \oset macro:
+\makeatletter
+\newcommand{\oset}[3][0ex]{%
+  \mathrel{\mathop{#3}\limits^{
+    \vbox to#1{\kern-2\ex@
+    \hbox{$\scriptstyle#2$}\vss}}}}
+\makeatother
+
+\renewcommand{\l}{\lambda}
+\newcommand{\m}{\mu}
+\newcommand{\lb}{{\bar{\lambda}}}
+\newcommand{\mb}{{\bar{\mu}}}
+
+\newcommand{\f}{f_{++}}
+\newcommand{\fb}{\bar{f}_{++}}
+\newcommand{\p}{\psi_\lambda}
+\newcommand{\ps}{\bar{\psi}_{\bar{\lambda}}}
+
+\newcommand{\rDer}[1]{\oset[-0.2ex]{\rightarrow}{#1}\phantom{\,}}
+\newcommand{\lDer}[1]{\oset[-0.2ex]{\leftarrow}{#1}\phantom{\,}}
+\newcommand{\lrDer}[1]{\oset[-0.2ex]{\leftrightarrow}{#1}\phantom{\,}}
+
+\newcommand{\whiteline}{\vskip 0.5cm}
+%\newcommand{\myline}[1]{{\color{#1}\rule{\textwidth}{2pt}}\\}
+\newcommand{\myline}[1]{{\color{#1}\center\hdashrule[1.0ex]{1\linewidth}{2pt}{1.5mm}}\\}
+\newcommand{\mydoubleline}[1]{{\color{#1}\center\hdashrule[-8.5ex]{1\linewidth}{2pt}{1.5mm}}
+{\color{#1}\center\hdashrule[0.0ex]{1\linewidth}{2pt}{1.5mm}}\\}
 
 \usefonttheme{professionalfonts}
 \usepackage{natbib}
@@ -39,7 +176,7 @@ anchorcolor=yellow
 \setbeamerfont{date}{size=\small}
 \setbeamerfont{institute}{size=\small}
 \title{Neural Networks for physics}
-\subtitle{But How to Make a Good Title?}
+\subtitle{...}
 \author[S. Rodini]{Simone Rodini}
 
 
@@ -80,26 +217,19 @@ anchorcolor=yellow
 \tableofcontents
 \end{frame}
 %------------------------------------------------------------
-\section{Introduction}
+\section{Roadmap}
 \begin{frame}{Introduction}
-    The Fama-French five-factor model \citep{fama_five-factor_2015}.
+How does a computer think? 
+\begin{enumerate}
+    \item A bit of summary on computation as theoretical tool: binary representation, assembly instructions, machine architecture. \red{More or less one hour}
+    \item Neural networks as generic models: what they are, how are they constructed, what they can be used for. \red{More or less one hour}
+    \item NN in physics: parameterize ignorance to extract information from data, few examples using solely classical Newtonian mechanics. \red{More or less one hour}
+    \item Practical example: using some mechanical system (to be defined, see later) use NN to extract information. It could be interesting to pair this with some type of practical experiment. \red{One hour}
+\end{enumerate}
+\green{Total time $\sim$ four hours, of which more or less one of looking at the code and doing something. To be defined how to actually have the students to interact with the code.}
 \end{frame}
 
-\section{Conclusion}
-\begin{frame}{Conclusion}
-    The Fama-French five-factor model \citep{fama_five-factor_2015}.
-\end{frame}
 
-\section*{Acknowledgement}  
-\begin{frame}
-\textcolor{myNewColorC}{\Huge{\centerline{Thank you!}}}
-\end{frame}
 
-\section*{Reference}  
-\begin{frame}{Reference}
-\scriptsize
-\bibliographystyle{apalike}
-\bibliography{ref}
-\end{frame}
-
+\bibliography{Notes/biblio}
 \end{document}
