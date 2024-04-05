@@ -84,8 +84,8 @@ input_parameters_t *init_input_parameters(const char fn[])
 static double sin_loc(double x) { return sin(x); }
 static double cos_loc(double x) { return cos(x); }
 
-static double power_loc(double x) { return x * x; }
-static double power_d_loc(double x) { return 2 * x; }
+static double power_loc(double x) { return x * x * x; }
+static double power_d_loc(double x) { return 3 * x * x; }
 
 static double dsign(double x) { return (0 < x) - (x < 0); }
 
@@ -97,7 +97,6 @@ int main()
 {
    main_2();
    fprintf(stderr, "Finished...");
-    double foo  =1;
    return 0;
 }
 
@@ -118,7 +117,7 @@ int main_2(void)
    // }
    // exit(0);
 
-   multil_set_act_layer(1, &net, &power_loc, &power_d_loc);
+   // multil_set_act_layer(1, &net, &power_loc, &power_d_loc);
    multil_set_act_layer(in_par->n_layer - 1, &net, sin_loc, cos_loc);
 
    size_t n_data = NDATA * NDATA;
@@ -144,13 +143,13 @@ int main_2(void)
    (void)minimize2(net.par, net.nPar, (void *)&loc_d, chi, chi_d_chi);
 
    FILE *fp = fopen("nn.dat", "w");
-   double in[2] = {0, 0};
+   double in[3] = {0, 0};
 
    for (size_t i = 0; i < NDATA; i++) {
       for (size_t j = 0; j < NDATA; j++) {
          in[0] = x[i];
          in[1] = y[j];
-         // in[0] = y[j] * x[i];
+         in[2] = y[j] * x[i];
          multil_Evaluate(&net, in);
          fprintf(fp, "%le\t%le\t%le\t%le\n", x[i], y[j], f[i + j * NDATA], multil_get(0, &net));
       }

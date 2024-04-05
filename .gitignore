@@ -21,8 +21,5 @@
 /Notes/*.fdb*
 /Notes/*.fls
 
-
-
-# rust 
-/rust/target
-/rust/Cargo.lock
+# Math notebooks
+/Ignored/
