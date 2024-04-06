@@ -3,6 +3,34 @@
 \usepackage{graphicx}
 \usepackage[export]{adjustbox}
 \usepackage {mathtools}
+\usepackage{listings}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+\lstset{
+  %basicstyle=\fontsize{8}{10}\selectfont\ttfamily,%\footnotesize,        % the size of the fonts that are used for the code
+  basicstyle=\ttfamily,
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=false,                % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  columns=fixed,
+  commentstyle=\color{mygreen},    % comment style
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{blue},       % keyword style
+  %language=[95]Fortran,            % the language of the code
+  numbers=none,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{mygray}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  %stringstyle=\color{mymauve},     % string literal style
+  tabsize=4,                       % sets default tabsize to 2 spaces
+  %title=\lstname                   % show the filename of files
+}
 \usepackage{utopia} %font utopia imported
 \usetheme{CambridgeUS}
 \usecolortheme{dolphin}
@@ -36,6 +64,8 @@
 \usepackage{graphicx}%
 
 \usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{patterns}
@@ -60,6 +90,9 @@
 \usepackage[most]{tcolorbox}
 \usepackage{xcolor}
 \definecolor{myGreen}{rgb}{0.2,0.72,0.2}
+\definecolor{greengray}{rgb}{0.7,0.8,0.7}
+\definecolor{bluegray}{rgb}{0.7,0.7,0.85}
+\definecolor{redgray}{rgb}{0.85,0.7,0.7}
 \definecolor{myWhite}{rgb}{0.98,0.98,0.98}
 \definecolor{myGray}{rgb}{0.7,0.7,0.75}
 \definecolor{myGold}{rgb}{0.8,0.64,0.24}
@@ -108,10 +141,9 @@
 \newcommand{\qc}{\right]}
 \newcommand{\gc}{\right\}}
 \newcommand{\tr}[1]{\text{Tr}\qa {#1} \qc}
-\renewcommand{\[}{\begin{equation}}
-\renewcommand{\]}{\end{equation}}
+\renewcommand{\[}{\begin{equation*}}
+\renewcommand{\]}{\end{equation*}}
 \newcommand{\nb}{{\bar{n}}}
-
 
 % Mathematica code stuff
 
@@ -213,10 +245,10 @@ anchorcolor=yellow
 
 %The next statement creates the title page.
 \frame{\titlepage}
-% \begin{frame}
-% \frametitle{Contents}
-% \tableofcontents
-% \end{frame}
+\begin{frame}
+\frametitle{Contents}
+\tableofcontents
+\end{frame}
 %------------------------------------------------------------
 \section{}
 \begin{frame}{Outline}
@@ -229,14 +261,17 @@ How does a computer think?
 \end{frame}
 
 \section{Computer basics}
+\subsection{Numbers on a computer}
 
 \begin{frame}{A general idea}
 \begin{columns}
-   
 \begin{column}{0.3\textwidth}
+\newline
 \begin{figure}
 \centering
-\includegraphics[width=0.5\textwidth]{Notes/Figures/transistor.jpg}
+\includegraphics[width=0.25\textwidth]{Notes/Figures/transistor.jpg}
+\includegraphics[width=0.45\textwidth]{Notes/Figures/cpu.jpeg}
+
 \end{figure}
 \end{column}
 
@@ -245,12 +280,181 @@ Transistors: the foundation
 \end{column}
 \end{columns}
 \pause
-\includegraphics[width=0.6\textwidth,center]{Notes/Figures/cpu_diagram.png}
+\begin{figure}
+\centering
+\includegraphics[width=0.35\textwidth]{Notes/Figures/6502_280x420.png}
+\includegraphics[width=0.6\textwidth]{Notes/Figures/cpu_diagram.png}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Number representation}
+\begin{columns}
+\begin{column}{0.5\textwidth}
+All digital computer works storing information as voltage level.\\
+We can store \red{2} values, conventionally referred to as \red{0, 1}.
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{Notes/Figures/square_wave.pdf}
+\end{figure}
+\end{column}
+\end{columns}
+\pause
+\red{Why not more?} Possible, but it has costs: energy, reliability, scalability etc... \\
+How can we represent numbers using only $0,1$? Binary!\\
+How to read a \red{base-10} number?
+\[
+\underset{\quad \quad \quad \hookleftarrow}{6710597111_{\red{10}}} \equiv 1 \cdot 10^0 +  1 \cdot 10^1 + 1 \cdot 10^2 + 7 \cdot 10^3 +...
+\]
+So, binary = base-2:
+\[
+11011011_{\red{2}} = 1 \cdot 2^0 + 1 \cdot 2^1 + 0 \cdot 2^2 + 1 \cdot 2^3 +  ...
+\]
+
+\end{frame}
+
+\begin{frame}{Number representation}
+Nowadays hardware can manage \red{64 bit} numbers: up to $2^{63}\lesssim 10^{19}$.\\
+Inconvenient to think in binary $\Rightarrow$ hexadecimal! Use $0$ and other $15$ symbols to represent numbers: $0,1,...,9,$A,B,C,D,E,F: 
+$
+\underbrace{1101}_{\text{D}}\underbrace{1011}_{\text{B}} = \text{DB}_{16}
+$
+With actually 64 bits:
+\[\begin{split}
+&\underbrace{1101}_{\text{D}}\underbrace{0101}_{\text{5}}\underbrace{0110}_{\text{B}}\underbrace{1111}_{\text{7}}\underbrace{0111}_{\text{C}}\underbrace{0001}_{\text{5}}\underbrace{0110}_{\text{B}}\underbrace{1111}_{\text{7}}\underbrace{0111}_{\text{7}}\underbrace{0111}_{\text{B}}\underbrace{0110}_{\text{7}}\underbrace{1111}_{\text{D}}\underbrace{1100}_{\text{3}}\underbrace{1101}_{\text{A}}\underbrace{0111}_{\text{7}}\underbrace{1011}_{\text{B}} \\ &= \text{D5B7C5B77B7D3A7B}
+\end{split}
+\]
+
+1 bit: one $1$ or $0$, 1 byte: eight $1$ and $0$ like $01000010$ $\equiv$ two hex number $42$.\\
+$64$ bits $\equiv$ $8$ bytes.\\
+Addition table: \begin{tabular}{c|c|c}
+  & 0 & 1 \\
+  \hline
+0 & 0 & 1\\
+1 & 1 & 0$^*$
+\end{tabular}  and multiplication table: \begin{tabular}{c|c|c}
+  & 0 & 1 \\
+  \hline
+0 & 0 & 0\\
+1 & 0 & 1
+\end{tabular}\\
+*: carrying the $1$, like in $9+1 = 0$ plus the carried $1$.
+
+\end{frame}
+
+\begin{frame}{Beyond positive integers}
+From any base $n$ to decimal is simple. From base-10 to any base: quotient-remainder algorithm: a tiny bit more annoying to carry out.\\
+Positive integers \ok\\
+Negative integers? Use the most significant bit (the leftmost one) to encode the sign: $0\Rightarrow$ positive. In formulas
+\[
+b_{N-1}b_{N-2}...b_{0} = -b_{N-1}2^{N-1} + \sum_{i=0}^{N-2}b_{i}2^{i}
+\]
+\pause
+For example:
+\[
+1001_{2} = -1\cdot 2^3 + 1\cdot 2^0 = -8+1 = -7
+\]
+Check: $7_{10}$ = $0111_{2}$ and
+\begin{columns}
+\begin{column}{0.75\textwidth}
+\[
+\begin{split}
+&0^\text{\tiny 1 }1^\text{\tiny 1 }1^\text{\tiny 1 }1 +\\
+&1\ \: 0\  0\ \:  1 = \\
+\hline 
+\red{1}&0\ \: 0\ 0\ \: 0
+\end{split}
+\] 
+\end{column}
+\begin{column}{0.25\textwidth}
+\begin{figure}
+    \includegraphics[width=1\textwidth,left]{Notes/Figures/download.jpeg}
+    \hfill
+\end{figure}
+
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Floating Points}
+How to represent numbers that are not integers?\\
+In binary we can use inverse powers of $2$, like $0.2 = 2\cdot 10^{-1}$ in binary $0.1_2 = 1 \cdot 2^{-1}$.\\
+On a computer only so many bits: no real numbers!\\
+Could we reserve some bits for the part after the period? Like
+\[
+\underbrace{101...1}_{\text{32-bit}}\red{.}\underbrace{110...1}_{\text{32-bit}}
+\]
+Yes, but impractical: sometimes we want very large numbers, sometimes very small, this has no adaptation capability.\\
+\pause
+Better: scientific notation! For a 32-bit number:
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{Notes/Figures/Float_example.png}
+\end{figure}
+
 \end{frame}
 
 
+\subsection{All good, but then what?}
+\begin{frame}{How does we instruct the computer}
+\begin{columns}
+\begin{column}{0.45\textwidth}
+\begin{figure}
+    \centering
+    \includestandalone[width=\textwidth]{Notes/Figures/instruction_diagram}
+\end{figure}
+\end{column}
+\begin{column}{0.55\textwidth}
+How does it work (\red{in a very approximate way})?\\
+\green{Level 0}: BIOS/UEFI = basic software built-in in the motherboard, manages the very low level hardware\\
+\green{Level 1}: OS = manages all the software, it is loaded by the BIOS/UEFI by reading instructions off a particular region of the memory\\
+\green{Level 2}: programs = the OS manages your programs, the memory for each of them, where they store information etc.
+\end{column}
+\end{columns}
+\end{frame}
 
+\begin{frame}[fragile]{How does we instruct the computer}
+On a 64 bit machine each instruction can be up to 15 \red{bytes} long(!). The 64 bit refers to the maximum size of each \red{register} in the cpu.\\
+Each instruction is \red{literally} a sequence of $0,1$ that triggers some electronics to do `stuff', like adding two numbers, moving memory, jump to different addresses etc.\\
+It is not manageable to write instructions in binary (or hex) format: human-readable machine code $\sim \text{assembly \includegraphics[width=0.04\textwidth]{Notes/Figures/assm.png}}$
+\begin{columns}
+\begin{column}{0.55\textwidth}
+\raggedleft
+\small
+\begin{lstlisting}[language={[x86masm]Assembler}]
+push rbp
+mov  rbp, rsp
+mov  DWORD PTR [rbp-4], 1
+mov  DWORD PTR [rbp-8], 2
+mov  edx, DWORD PTR [rbp-4]
+mov  eax, DWORD PTR [rbp-8]
+add  eax, edx
+mov  DWORD PTR [rbp-12], eax
+mov  eax, 0
+pop  rbp
+ret
+\end{lstlisting}
+\end{column}
+\begin{column}{0.45\textwidth}
+More readable than a buch of $1$ and $0$, but still a long way from its C counterpart:
+\begin{lstlisting}[language={[x86masm]Assembler}]
+int a = 1;
+int b = 2;
+int c = a + b;
+\end{lstlisting}
 
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Programming languages}
+\begin{figure}
+    \centering
+    \includestandalone[width=0.5\textwidth]{Notes/Figures/programming_languages}
+\end{figure}
+\end{frame}
 
 
 \bibliography{Notes/biblio}

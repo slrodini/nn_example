@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{dutchcal}
 \usepackage{tikz}
+\usetikzlibrary{shapes.multipart}
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{patterns}
@@ -71,50 +72,61 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Setup
 \coordinate (C) at (0, 0);
 % just to have nice boundaries to the picture
-\draw[white,fill=white] ($(-4,-4)$) circle (2pt);
-\draw[white,fill=white] ($(+4,+4)$) circle (2pt);
+\draw[white,fill=white] ($(-4,-5)$) circle (2pt);
+\draw[white,fill=white] ($(+2,+2)$) circle (2pt);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Diag-1
 
-% \xi = 1.5 for x\in[-4,4]
-% \theta(x'-x)\theta(x-\xi)
-\filldraw[draw=blue, fill=blue, line width=1pt,  draw opacity=0.25, pattern=grid, pattern color = blue] ($(C)+(1.5,1.5)$) -- ($(C)+(1.5,3.25)$) -- ($(C)+(3.25,3.25)$) -- cycle;
-
-% \theta(-x'+x)\theta(-x+\xi)
-\filldraw[draw=myGold, fill=myGold, line width=1pt, fill opacity=0.35, draw opacity=0.35] ($(C)+(1.5,1.5)$) -- ($(C)+(1.5,-3.25)$) -- ($(C)+(-3.25,-3.25)$) -- cycle;
-
-% \theta(x'-x)\theta(x+\xi)
-\filldraw[draw=red, fill=red, line width=1pt, fill opacity=0.25, draw opacity=0.25] ($(C)+(-1.5,-1.5)$) -- ($(C)+(-1.5,3.25)$) -- ($(C)+(3.25,3.25)$) -- cycle;
-
-% \theta(-x'+x)\theta(-x-\xi)
-\filldraw[draw=myGreen, fill=myGreen, line width=1pt,  draw opacity=0.25, pattern=grid, pattern color = myGreen] ($(C)+(-1.5,-1.5)$) -- ($(C)+(-1.5,-3.25)$) -- ($(C)+(-3.25,-3.25)$) -- cycle;
-
-\draw[pattern={crosshatch dots}, pattern color = gray, draw opacity = 0.5] ($(C)+(-1.5,-3.25)$) -- ($(C)+(-1.5,3.25)$) -- ($(C)+(1.5,3.25)$) -- ($(C)+(1.5,-3.25)$) -- ($(C)+(-1.5,-3.25)$);
+\node[above] at ($(C)+(-3,0)$) {Instructions};
+\node[below] at ($(C)+(-3.5,+0.0)$) {\tiny 0110};
+\node[below] at ($(C)+(-3.5,-0.2)$) {\tiny 1001};
+\node[below] at ($(C)+(-3.5,-0.4)$) {\tiny 0110};
+\node[below] at ($(C)+(-3.5,-0.6)$) {\tiny 1010};
+\node[below] at ($(C)+(-3.5,-0.8)$) {\tiny ...};
 
 \draw[very thick, postaction={decorate, decoration={
     markings,
-    mark=at position 1.0 with {\arrow{stealth}}}}] ($(C)+(-3.5,0)$)--($(C)+(3.5,0)$);
+    mark=at position 1 with {\arrow{stealth}}}}] ($(C)+(-3,0)$) -- ($(C)+(-1,0)$);
+
+\draw[thick, black, fill=lightgray] ($(C)+(-1.0,-1.0)$) rectangle ($(C)+(1.0,1.0)$);
+\node[] at ($(C)$) {CPU};
+
+
 \draw[very thick, postaction={decorate, decoration={
     markings,
-    mark=at position 1.0 with {\arrow{stealth}}}}] ($(C)+(0,-3.5)$)--($(C)+(0,3.5)$);
+    mark=at position 1 with {\arrow{stealth}}}}] ($(C)+(0,-2)$) -- ($(C)+(0,-1)$);
+    \draw[very thick, postaction={decorate, decoration={
+    markings,
+    mark=at position 1 with {\arrow{stealth}}}}] ($(C)+(0,-1)$) -- ($(C)+(0,-2)$);
+\draw[thick,black, fill=myGreen] ($(C)+(-2.0,-3.5)$) rectangle ($(C)+(2.0,-2.0)$);
+\draw[black] ($(C)+(-2.0,-3.25)$) -- ($(C)+(2.0,-3.25)$);
+\draw[black] ($(C)+(-2.0,-3.00)$) -- ($(C)+(2.0,-3.00)$);
+\draw[black] ($(C)+(-2.0,-2.75)$) -- ($(C)+(2.0,-2.75)$);
+\draw[black] ($(C)+(-2.0,-2.50)$) -- ($(C)+(2.0,-2.50)$);
+\draw[black] ($(C)+(-2.0,-2.25)$) -- ($(C)+(2.0,-2.25)$);
 
-\draw[very thick, dash pattern=on 5mm off 2mm] ($(C)+(-3.25,-3.25)$)--($(C)+(3.25,3.25)$);
+\draw[black] ($(C)+(-1.75,-3.50)$) -- ($(C)+(-1.75,-2.00)$);
+\draw[black] ($(C)+(-1.50,-3.50)$) -- ($(C)+(-1.50,-2.00)$);
+\draw[black] ($(C)+(-1.25,-3.50)$) -- ($(C)+(-1.25,-2.00)$);
+\draw[black] ($(C)+(-1.00,-3.50)$) -- ($(C)+(-1.00,-2.00)$);
 
-% -\xi
-\draw[very thick, dash dot] ($(C)+(-1.5,-3.25)$)--($(C)+(-1.5,3.25)$);
-% +\xi
-\draw[very thick, dash dot] ($(C)+(1.5,-3.25)$)--($(C)+(1.5,3.25)$);
-\node[above,right] at ($(C)+(0,3.5)$) {$\text{\large $x'$}$};
-\node[above] at ($(C)+(3.5,0)$) {$\text{\large $x$}$};
-\node[below, rotate=45] at ($(C)+(2.75,2.75)$) {$\text{\large $x'=x$}$};
-\node[above,left] at ($(C)+(-1.5,0.25)$) {$\text{\large $-|\xi|$}$};
-\node[above,right] at ($(C)+(1.5,0.25)$) {$\text{\large $|\xi|$}$};
+\draw[black] ($(C)+(-0.75,-3.50)$) -- ($(C)+(-0.75,-2.00)$);
+\draw[black] ($(C)+(-0.50,-3.50)$) -- ($(C)+(-0.50,-2.00)$);
+\draw[black] ($(C)+(-0.25,-3.50)$) -- ($(C)+(-0.25,-2.00)$);
 
+\draw[black] ($(C)+(0.75,-3.50)$) -- ($(C)+(0.75,-2.00)$);
+\draw[black] ($(C)+(0.50,-3.50)$) -- ($(C)+(0.50,-2.00)$);
+\draw[black] ($(C)+(0.25,-3.50)$) -- ($(C)+(0.25,-2.00)$);
+\draw[black] ($(C)+(0.00,-3.50)$) -- ($(C)+(0.00,-2.00)$);
 
+\draw[black] ($(C)+(1.75,-3.50)$) -- ($(C)+(1.75,-2.00)$);
+\draw[black] ($(C)+(1.50,-3.50)$) -- ($(C)+(1.50,-2.00)$);
+\draw[black] ($(C)+(1.25,-3.50)$) -- ($(C)+(1.25,-2.00)$);
+\draw[black] ($(C)+(1.00,-3.50)$) -- ($(C)+(1.00,-2.00)$);
 
-\draw[black,fill=black] ($(C)+(-1.5,0)$) circle (2pt);
-\draw[black,fill=black] ($(C)+(1.5,0)$) circle (2pt);
+\node[] at ($(C)+(0,-4)$) {Memory};
+
 
 
 

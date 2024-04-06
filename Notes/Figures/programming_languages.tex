@@ -4,6 +4,7 @@
 \usepackage{amssymb}
 \usepackage{dutchcal}
 \usepackage{tikz}
+\usetikzlibrary{shapes.multipart}
 \usetikzlibrary{decorations.pathmorphing}
 \usetikzlibrary{decorations.markings}
 \usetikzlibrary{patterns}
@@ -12,6 +13,9 @@
 \usetikzlibrary{fpu}
 \usepackage{xcolor}
 \definecolor{myGreen}{rgb}{0.2,0.72,0.2}
+\definecolor{greengray}{rgb}{0.7,0.8,0.7}
+\definecolor{bluegray}{rgb}{0.7,0.7,0.85}
+\definecolor{redgray}{rgb}{0.85,0.7,0.7}
 \definecolor{myWhite}{rgb}{0.98,0.98,0.98}
 \definecolor{myGray}{rgb}{0.7,0.7,0.75}
 \definecolor{myGold}{rgb}{0.8,0.64,0.24}
@@ -71,50 +75,38 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Setup
 \coordinate (C) at (0, 0);
 % just to have nice boundaries to the picture
-\draw[white,fill=white] ($(-4,-4)$) circle (2pt);
-\draw[white,fill=white] ($(+4,+4)$) circle (2pt);
+\draw[white,fill=white] ($(-3,-4.5)$) circle (2pt);
+\draw[white,fill=white] ($(+3,+2.5)$) circle (2pt);
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Diag-1
 
-% \xi = 1.5 for x\in[-4,4]
-% \theta(x'-x)\theta(x-\xi)
-\filldraw[draw=blue, fill=blue, line width=1pt,  draw opacity=0.25, pattern=grid, pattern color = blue] ($(C)+(1.5,1.5)$) -- ($(C)+(1.5,3.25)$) -- ($(C)+(3.25,3.25)$) -- cycle;
-
-% \theta(-x'+x)\theta(-x+\xi)
-\filldraw[draw=myGold, fill=myGold, line width=1pt, fill opacity=0.35, draw opacity=0.35] ($(C)+(1.5,1.5)$) -- ($(C)+(1.5,-3.25)$) -- ($(C)+(-3.25,-3.25)$) -- cycle;
-
-% \theta(x'-x)\theta(x+\xi)
-\filldraw[draw=red, fill=red, line width=1pt, fill opacity=0.25, draw opacity=0.25] ($(C)+(-1.5,-1.5)$) -- ($(C)+(-1.5,3.25)$) -- ($(C)+(3.25,3.25)$) -- cycle;
-
-% \theta(-x'+x)\theta(-x-\xi)
-\filldraw[draw=myGreen, fill=myGreen, line width=1pt,  draw opacity=0.25, pattern=grid, pattern color = myGreen] ($(C)+(-1.5,-1.5)$) -- ($(C)+(-1.5,-3.25)$) -- ($(C)+(-3.25,-3.25)$) -- cycle;
-
-\draw[pattern={crosshatch dots}, pattern color = gray, draw opacity = 0.5] ($(C)+(-1.5,-3.25)$) -- ($(C)+(-1.5,3.25)$) -- ($(C)+(1.5,3.25)$) -- ($(C)+(1.5,-3.25)$) -- ($(C)+(-1.5,-3.25)$);
+\draw[thick, black, fill=redgray] ($(C)+(-2.0,1.0)$) rectangle ($(C)+(2.0,2.0)$);
+\node[] at ($(C)+(0,1.5)$) {Interpreted Languages};
 
 \draw[very thick, postaction={decorate, decoration={
     markings,
-    mark=at position 1.0 with {\arrow{stealth}}}}] ($(C)+(-3.5,0)$)--($(C)+(3.5,0)$);
+    mark=at position 1 with {\arrow{stealth}}}}] ($(C)+(-2.0,0.0)$) --  ($(C)+(-2.75,0.0)$) -- ($(C)+(-2.75,-2.75)$) -- ($(C)+(-2.0,-2.75)$);
+
+\draw[thick, black, fill=bluegray] ($(C)+(-2.0,-0.5)$) rectangle ($(C)+(2.0,0.5)$);
+\node[] at ($(C)+(0,0)$) {JIT Languages};
+
 \draw[very thick, postaction={decorate, decoration={
     markings,
-    mark=at position 1.0 with {\arrow{stealth}}}}] ($(C)+(0,-3.5)$)--($(C)+(0,3.5)$);
+    mark=at position 1 with {\arrow{stealth}}}}] ($(C)+(0,-2)$) -- ($(C)+(0,-2.5)$);
 
-\draw[very thick, dash pattern=on 5mm off 2mm] ($(C)+(-3.25,-3.25)$)--($(C)+(3.25,3.25)$);
+\draw[thick, black, fill=greengray] ($(C)+(-2.0,-2.0)$) rectangle ($(C)+(2.0,-1)$);
+\node[] at ($(C)+(0,-1.5)$) {Compiled Languages};
 
-% -\xi
-\draw[very thick, dash dot] ($(C)+(-1.5,-3.25)$)--($(C)+(-1.5,3.25)$);
-% +\xi
-\draw[very thick, dash dot] ($(C)+(1.5,-3.25)$)--($(C)+(1.5,3.25)$);
-\node[above,right] at ($(C)+(0,3.5)$) {$\text{\large $x'$}$};
-\node[above] at ($(C)+(3.5,0)$) {$\text{\large $x$}$};
-\node[below, rotate=45] at ($(C)+(2.75,2.75)$) {$\text{\large $x'=x$}$};
-\node[above,left] at ($(C)+(-1.5,0.25)$) {$\text{\large $-|\xi|$}$};
-\node[above,right] at ($(C)+(1.5,0.25)$) {$\text{\large $|\xi|$}$};
+\draw[thick, black, fill=lightgray] ($(C)+(-2.0,-3.0)$) rectangle ($(C)+(2.0,-2.5)$);
+\node[] at ($(C)+(0,-2.75)$) {Assembly};
+
+
+\draw[thick, black, fill=lightgray] ($(C)+(-2.0,-4.0)$) rectangle ($(C)+(2.0,-3.0)$);
+\node[] at ($(C)+(0,-3.5)$) {Machine code};
 
 
 
-\draw[black,fill=black] ($(C)+(-1.5,0)$) circle (2pt);
-\draw[black,fill=black] ($(C)+(1.5,0)$) circle (2pt);
 
 
 
