@@ -164,12 +164,11 @@ void multil_free_net(multilayer_t *net)
    free(net->sd_li);
 }
 
-// static inline double Wjk(size_t j, size_t k, size_t L, multilayer_t *net) { return net->par[net->offsetW[L - 1] + k + (net->arch[L - 1]) * j]; }
+static inline double Wjk(size_t j, size_t k, size_t L, multilayer_t *net) { return net->par[net->offsetW[L - 1] + k + (net->arch[L - 1]) * j]; }
+static inline double Bj(size_t j, size_t L, multilayer_t *net) { return net->par[net->offsetB[L - 1] + j]; }
 
-// static inline double Bj(size_t j, size_t L, multilayer_t *net) { return net->par[net->offsetB[L - 1] + j]; }
-
-#define Wjk(j, k, L, net) (net)->par[(net)->offsetW[(L)-1] + (k) + ((net)->arch[(L)-1]) * (j)]
-#define Bj(j, L, net) (net)->par[(net)->offsetB[(L)-1] + (j)]
+// #define Wjk(j, k, L, net) (net)->par[(net)->offsetW[(L)-1] + (k) + ((net)->arch[(L)-1]) * (j)]
+// #define Bj(j, L, net) (net)->par[(net)->offsetB[(L)-1] + (j)]
 
 void multil_Evaluate(multilayer_t *net, double *x)
 {
@@ -203,7 +202,6 @@ void multil_Evaluate(multilayer_t *net, double *x)
 
 void multil_EvaluateParGradient(multilayer_t *net, double *x)
 {
-   // size_t count = 0;
    (void)x;
    double *sigma_vec = net->sigma_vec;
    double *sigmaTemp_vec = net->sigmaTemp_vec;
@@ -216,7 +214,7 @@ void multil_EvaluateParGradient(multilayer_t *net, double *x)
    for (size_t i = 0; i < net->nO; i++) {
       size_t out_offset = i * net->nPar;
 
-      // rest the temp vector
+      // reset the temp vector
       memset(sigma_vec, 0, sizeof(double) * net->maxNH);
       sigma_vec[i] = 1.0;
 
@@ -239,8 +237,6 @@ void multil_EvaluateParGradient(multilayer_t *net, double *x)
             }
          }
 
-         // memcpy(sigma_vec, sigmaTemp_vec, sizeof(double) * arch[L - 1]);
-         // swap the role instead of copying the memory
          double *ptr_temp = sigma_vec;
          sigma_vec = sigmaTemp_vec;
          sigmaTemp_vec = ptr_temp;
