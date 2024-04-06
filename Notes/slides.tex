@@ -456,6 +456,23 @@ int c = a + b;
 \end{figure}
 \end{frame}
 
+\begin{frame}{Examples}
+What does it mean to `compile' a language? \\
+\[
+\text{Human-readable code} \Longrightarrow \text{Machine code}
+\]
+It is a translation!
+\\
+{\color{redgray} \textbf{Python}}: interpreted language. What does it mean? It reads the commands, parse them, construct \red{on the fly} the logical tree and execute them via previously compiled functions.\\
+{\color{bluegray} \textbf{Lua}}: JIT (just-in-time compiled) language. It reads pieces of code, \red{compile them on-the-fly} and execute the resulting binary.\\{\color{greengray} \textbf{C/C++}}: compiled languages. There is a dedicated piece of software (the compiler) that translates the code to machine instructions. This is done \red{separately} from the running of the progrma itself.
+\end{frame}
+
+\begin{frame}
+Your turn now, let us play a bit!
+\end{frame}
+
+\section{Neural Networks, the basics}
+
 
 \bibliography{Notes/biblio}
 \end{document}
