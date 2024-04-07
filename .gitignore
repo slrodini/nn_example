@@ -9,7 +9,6 @@
 /Notes/*.toc
 
 # PDF output - usually a bad idea to keep this in Git
-/Notes/*.pdf
 /Notes/*.gz
 
 # BibTeX & Beamer temp files
