@@ -1,2 +1,0 @@
-run from the folder `jupyter notebook'
-copy one of the localhost links to the browser and select the corresponding notebook
