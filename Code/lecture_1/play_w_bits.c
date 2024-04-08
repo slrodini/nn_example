@@ -7,10 +7,9 @@
 #define _EXIT_()                                                                                                                                     \
    {                                                                                                                                                 \
       int toExit = 0;                                                                                                                                \
-      while (1 != toExit) {                                                                                                                          \
-         fprintf(stderr, "Do you want to exit? 0: No, 1: Yes, >1: Undefined\n");                                                                     \
-         fscanf(stdin, "%d", &toExit);                                                                                                               \
-      }                                                                                                                                              \
+      fprintf(stderr, "Do you want to exit? 0: No, otherwise: Yes\n");                                                                               \
+      fscanf(stdin, "%d", &toExit);                                                                                                                  \
+      if (toExit == 0) goto main_start;                                                                                                              \
    }
 
 static void print_bin_int32_for_float(int32_t a)
@@ -54,10 +53,10 @@ void print_float(float x)
 int main()
 {
    float x = 3;
-
-   fprintf(stderr,"Please input your floating point number: \t");
+main_start:
+   fprintf(stderr, "Please input your floating point number: \t");
    fscanf(stdin, "%f", &x);
-   
+
    print_float(x);
 
    _EXIT_();

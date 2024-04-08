@@ -3,7 +3,6 @@ run from the folder `jupyter notebook'
 copy one of the localhost links to the browser and select the notebook HeatEquation.ipynb
 
 For the bit code:
-compile by running:
-gcc play_w_bits.c
-execute by running
-./a.out
+`Optional` compile by running:
+x86_64-w64-mingw32-gcc play_w_bits.c
+execute by launching a.exe 
