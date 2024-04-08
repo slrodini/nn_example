@@ -209,7 +209,6 @@ anchorcolor=yellow
 \setbeamerfont{date}{size=\small}
 \setbeamerfont{institute}{size=\small}
 \title{Neural Networks for physics}
-\subtitle{...}
 \author[S. Rodini]{Simone Rodini}
 
 
@@ -321,11 +320,11 @@ Inconvenient to think in binary $\Rightarrow$ hexadecimal! Use $0$ and other $15
 $
 \underbrace{1101}_{\text{D}}\underbrace{1011}_{\text{B}} = \text{DB}_{16}
 $
-With actually 64 bits:
-\[\begin{split}
-&\underbrace{1101}_{\text{D}}\underbrace{0101}_{\text{5}}\underbrace{0110}_{\text{B}}\underbrace{1111}_{\text{7}}\underbrace{0111}_{\text{C}}\underbrace{0001}_{\text{5}}\underbrace{0110}_{\text{B}}\underbrace{1111}_{\text{7}}\underbrace{0111}_{\text{7}}\underbrace{0111}_{\text{B}}\underbrace{0110}_{\text{7}}\underbrace{1111}_{\text{D}}\underbrace{1100}_{\text{3}}\underbrace{1101}_{\text{A}}\underbrace{0111}_{\text{7}}\underbrace{1011}_{\text{B}} \\ &= \text{D5B7C5B77B7D3A7B}
-\end{split}
-\]
+% With actually 64 bits:
+% \[\begin{split}
+% &\underbrace{1101}_{\text{D}}\underbrace{0101}_{\text{5}}\underbrace{0110}_{\text{B}}\underbrace{1111}_{\text{7}}\underbrace{0111}_{\text{C}}\underbrace{0001}_{\text{5}}\underbrace{0110}_{\text{B}}\underbrace{1111}_{\text{7}}\underbrace{0111}_{\text{7}}\underbrace{0111}_{\text{B}}\underbrace{0110}_{\text{7}}\underbrace{1111}_{\text{D}}\underbrace{1100}_{\text{3}}\underbrace{1101}_{\text{A}}\underbrace{0111}_{\text{7}}\underbrace{1011}_{\text{B}} \\ &= \text{D5B7C5B77B7D3A7B}
+% \end{split}
+% \]
 
 1 bit: one $1$ or $0$, 1 byte: eight $1$ and $0$ like $01000010$ $\equiv$ two hex number $42$.\\
 $64$ bits $\equiv$ $8$ bytes.\\
@@ -378,21 +377,32 @@ Check: $7_{10}$ = $0111_{2}$ and
 \end{columns}
 \end{frame}
 
-\begin{frame}{Floating Points}
+\begin{frame}{Floating Point}
 How to represent numbers that are not integers?\\
-In binary we can use inverse powers of $2$, like $0.2 = 2\cdot 10^{-1}$ in binary $0.1_2 = 1 \cdot 2^{-1}$.\\
+In binary we can use inverse powers of $2$, for instance $0.1_2 \equiv 1\cdot 2^{-1}$. \\
+A curiosity: whether a number as a periodical form \red{depends} on the base! For instance $1/5 = 0.2_{10}$ in binary is $0.001\ 1001\ 1001\ ..._{2}$.
+
 On a computer only so many bits: no real numbers!\\
 Could we reserve some bits for the part after the period? Like
 \[
 \underbrace{101...1}_{\text{32-bit}}\red{.}\underbrace{110...1}_{\text{32-bit}}
 \]
-Yes, but impractical: sometimes we want very large numbers, sometimes very small, this has no adaptation capability.\\
-\pause
-Better: scientific notation! For a 32-bit number:
+Yes, but impractical: sometimes we want very large numbers, sometimes very small, this has no adaptation capability. This is called \red{fixed-point representation}.\\
+This representation is very fast, and in older machines that did not have any hardware for \red{floating} point it was extensively used (and if you dig in the gcc compiler, you will still find it).
+\end{frame}
+
+\begin{frame}{Floating Point}
+Modern solution: scientific notation! For a 32-bit number:
 \begin{figure}
     \centering
     \includegraphics[width=\textwidth]{Notes/Figures/Float_example.png}
 \end{figure}
+This is the \red{IEEE 754} standard: everybody must agree how to parse the bits, otherwise it is a mess!\\
+
+
+\red{Exercise}: you have a simple program that given a floating point input gives you the bit representation as in the figure above, plus the decomposition in powers of $2$. \\
+What are your observations? How is the number formatted? 
+
 
 \end{frame}
 
@@ -464,7 +474,21 @@ What does it mean to `compile' a language? \\
 It is a translation!
 \\
 {\color{redgray} \textbf{Python}}: interpreted language. What does it mean? It reads the commands, parse them, construct \red{on the fly} the logical tree and execute them via previously compiled functions.\\
-{\color{bluegray} \textbf{Lua}}: JIT (just-in-time compiled) language. It reads pieces of code, \red{compile them on-the-fly} and execute the resulting binary.\\{\color{greengray} \textbf{C/C++}}: compiled languages. There is a dedicated piece of software (the compiler) that translates the code to machine instructions. This is done \red{separately} from the running of the progrma itself.
+{\color{bluegray} \textbf{Lua}}: JIT (just-in-time compiled) language. It reads pieces of code, \red{compile them on-the-fly} and execute the resulting binary.\\{\color{greengray} \textbf{C/C++}}: compiled languages. There is a dedicated piece of software (the compiler) that translates the code to machine instructions. This is done \red{separately} from the running of the program itself.
+\end{frame}
+
+\begin{frame}
+Programming languages (or syntaxes) come in all shape and form!\\
+Not all of them are friendly: in the beginning select the language that feels most natural to you, then you should keep in mind to use \red{the right tool for the job}.\\
+For instance, did you know that you can programm a roller coaster in Excel? \href{https://www.youtube.com/watch?v=IrVA1BBHFHw}{Link}\\
+Or that it does exist a (Turing complete!) programming language with just 8 symbols? It is called \href{https://en.wikipedia.org/wiki/Brainfuck}{Brainfuck} (guess why...) and to print the string `Hello World!' the code is 
+\[\begin{split}
+& ++++++++[>++++[>++>+++>+++\\
+& >+<<<<-]>+>+>->>+[<]<-]\\
+& >>.>---.+++++++..+++.>>.<-.\\
+& <.+++.------.--------.>>+.>++.
+\end{split}\]
+Crazy, ain't it?
 \end{frame}
 
 \begin{frame}
