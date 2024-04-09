@@ -2,8 +2,11 @@
 #include <network.h>
 #include <ran2.h>
 
-static double loc_sigma(double x) { return fabs(x); }
-static double loc_sigma_d(double x) { return x > 0 ? 1 : -1; }
+// static double loc_sigma(double x) { return fabs(x); }
+// static double loc_sigma_d(double x) { return x > 0 ? 1 : -1; }
+
+static double loc_sigma(double x) { return tanh(x); }
+static double loc_sigma_d(double x) {return 4.0 / pow((exp(x) + exp(-x)), 2); }
 
 static double loc_id(double x) { return x; }
 static double loc_id_d(double x)

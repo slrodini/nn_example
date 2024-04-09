@@ -1,5 +1,7 @@
 /Code/.vscode
 /Code/*.dat
+/Code/nn/*.dat
+/Code/lecture_1/*.dat
 /Code/*.elf
 /Code/*.o
 

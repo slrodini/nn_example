@@ -118,22 +118,37 @@ int main_2(void)
    // exit(0);
 
    // multil_set_act_layer(1, &net, &power_loc, &power_d_loc);
-   multil_set_act_layer(in_par->n_layer - 1, &net, sin_loc, cos_loc);
+   // multil_set_act_layer(in_par->n_layer - 1, &net, sin_loc, cos_loc);
 
-   size_t n_data = NDATA * NDATA;
-   double f[NDATA * NDATA] = {0};
-   double x[NDATA] = {0};
-   double y[NDATA] = {0};
+   FILE *fp2 = fopen("../lecture_1/data_heat_eq.dat", "r");
+   if (!fp2) exit(1);
+   char buffer[1024] = "";
+   size_t n_data = 0;
 
-   for (size_t i = 0; i < NDATA; i++) {
-      x[i] = (double)i / ((double)NDATA);
-      y[i] = (double)i / ((double)NDATA);
+   while (fgets(buffer, 1024, fp2)) {
+      n_data++;
    }
-   for (size_t i = 0; i < NDATA; i++) {
-      for (size_t j = 0; j < NDATA; j++) {
-         f[i + j * NDATA] = sin(3 * x[i] * y[j] * 2 * M_PI);
-      }
+   rewind(fp2);
+
+   double f[n_data];
+   double x[n_data];
+   double y[n_data];
+   size_t counter = 0;
+   while (fgets(buffer, 1024, fp2)) {
+      sscanf(buffer, "%le %le %le", x + counter, y + counter, f + counter);
+      counter++;
    }
+//    printf("%lf\n", y[0]);
+// exit(0);
+   // for (size_t i = 0; i < n_data; i++) {
+   //    x[i] = (double)i / ((double)n_data);
+   //    y[i] = (double)i / ((double)n_data);
+   // }
+   // for (size_t i = 0; i < n_data; i++) {
+   //    for (size_t j = 0; j < n_data; j++) {
+   //       f[i + j * n_data] = sin(3 * x[i] * y[j] * 2 * M_PI);
+   //    }
+   // }
 
    local_data_t loc_d = {.data = f, .x = x, .y = y, .nn = &net, .n = n_data};
 
@@ -143,16 +158,13 @@ int main_2(void)
    (void)minimize2(net.par, net.nPar, (void *)&loc_d, chi, chi_d_chi);
 
    FILE *fp = fopen("nn.dat", "w");
-   double in[3] = {0, 0};
+   double in[2] = {0, 0};
 
-   for (size_t i = 0; i < NDATA; i++) {
-      for (size_t j = 0; j < NDATA; j++) {
-         in[0] = x[i];
-         in[1] = y[j];
-         in[2] = y[j] * x[i];
-         multil_Evaluate(&net, in);
-         fprintf(fp, "%le\t%le\t%le\t%le\n", x[i], y[j], f[i + j * NDATA], multil_get(0, &net));
-      }
+   for (size_t i = 0; i < n_data; i++) {
+      in[0] = x[i];
+      in[1] = y[i];
+      multil_Evaluate(&net, in);
+      fprintf(fp, "%le\t%le\t%le\t%le\n", x[i], y[i], f[i], multil_get(0, &net));
    }
 
    fclose(fp);
