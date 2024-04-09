@@ -497,6 +497,61 @@ Your turn now, let us play a bit!
 
 \section{Neural Networks, the basics}
 
+\begin{frame}{Schematic}
+\begin{figure}
+    \centering
+    \includestandalone[width=0.65\textwidth]{Notes/Figures/network}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Ingredients}
+Each line is a `weight' $w^{(l)}_{ij}$, where $j$ index the node \red{on the right} and $i$ index the node \red{on the left} and $l$ gives the layer, numbered from right to left. To each node give a `bias' $b^{l}_i$.\\
+To compute the first node of the first hidden layer do:\\
+1) for each input $x_1$, ... $x_4$ compute $t_1 = w_{11}x_1+w_{12}x_2+w_{13}x_3+w_{14}x_4$.\\
+2) Add the bias: $t'_1 = t_1 + b^{(1)}_1 $.\\
+3) Apply some non-linear function$^*$ $y^{1}_1 = \sigma(t'_1)$.\\
+
+Then repeat for all other nodes. For the second hidden layer use as input the $y^(1)_i$ etc.\\
+
+$^*$ non-linear $\sim$ $f(a x+ by)\neq af(x)+bf(y)$.
+\end{frame}
+
+\begin{frame}{Few more details}
+The choice of the function is important. In general \red{different functions for each layer}. 
+
+Classical example:\\
+\begin{columns}
+\begin{column}{0.35\textwidth}
+1) ReLU: 
+$
+\begin{cases}
+x & \text{ if } x>0\\
+0 & \text{ otherwise }
+\end{cases}
+$\\
+$ $  \newline
+2) Sigmoid: $1/\ta 1+e^{-x}\tc$\\
+$ $  \newline
+3) Cubic $x^3$
+
+\end{column}
+\begin{column}{0.5\textwidth}
+\begin{figure}
+\centering
+\includegraphics[width = 0.45\textwidth]{Notes/Figures/relu.pdf}\ 
+\includegraphics[width = 0.45\textwidth]{Notes/Figures/sigmoid.pdf}\\
+\includegraphics[width = 0.45\textwidth]{Notes/Figures/cubic.pdf}
+\end{figure}
+\end{column}
+\end{columns}
+
+\end{frame}
+
+\begin{frame}{But how to get results?}
+If weights and biases are given at random the results is garbage!\\
+We need a procedure to find a set of weights and biases such that the output is in line with what we want.
+\end{frame}
+
 
 \bibliography{Notes/biblio}
 \end{document}
