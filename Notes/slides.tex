@@ -3,7 +3,7 @@
 \usepackage{graphicx}
 \usepackage[export]{adjustbox}
 \usepackage {mathtools}
-\usepackage{listings}
+\usepackage{listings,newtxtt}
 \definecolor{mygreen}{rgb}{0,0.6,0}
 \definecolor{mygray}{rgb}{0.5,0.5,0.5}
 \definecolor{mymauve}{rgb}{0.58,0,0.82}
@@ -448,8 +448,8 @@ ret
 \end{lstlisting}
 \end{column}
 \begin{column}{0.45\textwidth}
-More readable than a buch of $1$ and $0$, but still a long way from its C counterpart:
-\begin{lstlisting}[language={[x86masm]Assembler}]
+More readable than a bunch of $1$ and $0$, but still a long way from its C counterpart:
+\begin{lstlisting}[language=C]
 int a = 1;
 int b = 2;
 int c = a + b;
@@ -492,7 +492,48 @@ Crazy, ain't it?
 \end{frame}
 
 \begin{frame}
+\begin{center}
+\begin{minipage}{10cm}
+\setbeamercolor{postit}{fg=black,bg=myNewColorA}
+\begin{beamercolorbox}[sep=1em,wd=6cm,rounded=true,shadow=true]{postit}
 Your turn now, let us play a bit!
+\end{beamercolorbox}\end{minipage}
+\end{center}
+$ $\\
+You have two codes: \\
+1) `lecture\_1/HeatEquation.ipynb', which is a Jupyter notebook (runs on python)\\
+2) an executable `Code/lecture\_1/a.exe', which is generated from the `Code/lecture\_1/play\_w\_bits.c'
+\end{frame}
+
+\begin{frame}{Heat Equation}
+It describes how the heat defuse along a (mono-dimensional) bar as time goes on. The surrounding environment is assumed at constant temperature and with infinite heat capacity (to start with).
+\begin{center}
+\begin{figure}
+    \includegraphics[width=0.7\textwidth]{Notes/Figures/heat_bar.pdf}
+\end{figure}
+\end{center}
+
+Besides how it is defined, you can play around with the initial condition (i.e. how the heat is distributed at the initial time) and how the surrounding temperature changes 
+
+\end{frame}
+
+\begin{frame}{What you can do}
+1) Play around with the bit executable, try to feed different numbers. What are your observations? Do you understand the procedure? Check some of the powers of $2$ decompositions to convince yourself that the sums that are given actually produces back your original number.\\
+2) In the Heat equation notebook you have two lines enclosed in the comment: \lstinline[language=Python]{\# ----- Change me -------}:\\
+\lstinline[language=Python]{u[i] = np.exp(-x[i]**2) * np.sin( np.pi * x[i] / 3)}\\
+\lstinline[language=Python]{v[i] = 0}\\
+The first set the initial condition to be 
+$
+\begin{cases}
+e^{-x^2}\sin\ta\frac{\pi}{3}x\tc & \text{ if } -3\le x\le 3\\
+0 & \text{ otherwise }
+\end{cases}
+$\\
+The second set the environment at constant zero temperature. 
+Try to change these functions \red{following the directions that we give you!}
+
+
+
 \end{frame}
 
 \section{Neural Networks, the basics}
