@@ -478,7 +478,7 @@ It is a translation!
 \end{frame}
 
 \begin{frame}
-Programming languages (or syntaxes) come in all shape and form!\\
+Programming languages (or syntaxes) come in all shapes and forms!\\
 Not all of them are friendly: in the beginning select the language that feels most natural to you, then you should keep in mind to use \red{the right tool for the job}.\\
 For instance, did you know that you can programm a roller coaster in Excel? \href{https://www.youtube.com/watch?v=IrVA1BBHFHw}{Link}\\
 Or that it does exist a (Turing complete!) programming language with just 8 symbols? It is called \href{https://en.wikipedia.org/wiki/Brainfuck}{Brainfuck} (guess why...) and to print the string `Hello World!' the code is 
@@ -538,6 +538,26 @@ Try to change these functions \red{following the directions that we give you!}
 
 \section{Neural Networks, the basics}
 
+\begin{frame}{The problem}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{Notes/Figures/points_1.pdf}
+\end{figure}
+\end{frame}
+\begin{frame}{The problem}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{Notes/Figures/points_2.pdf}
+\end{figure}
+\end{frame}
+
+\begin{frame}{}
+For just a collection of points well establish techniques: interpolation!\\
+$ $\\
+But what if points are \red{from measurement} and the relation to the model is \red{complex}?\\
+What if we do not have any intuition on what the model should \red{look like}?
+\end{frame}
+
 \begin{frame}{Schematic}
 \begin{figure}
     \centering
@@ -548,10 +568,13 @@ Try to change these functions \red{following the directions that we give you!}
 \begin{frame}{Ingredients}
 Each line is a `weight' $w^{(l)}_{ij}$, where $j$ index the node \red{on the right} and $i$ index the node \red{on the left} and $l$ gives the layer, numbered from right to left. To each node give a `bias' $b^{l}_i$.\\
 To compute the first node of the first hidden layer do:\\
+\pause
 1) for each input $x_1$, ... $x_4$ compute $t_1 = w_{11}x_1+w_{12}x_2+w_{13}x_3+w_{14}x_4$.\\
+\pause
 2) Add the bias: $t'_1 = t_1 + b^{(1)}_1 $.\\
+\pause
 3) Apply some non-linear function$^*$ $y^{1}_1 = \sigma(t'_1)$.\\
-
+\pause
 Then repeat for all other nodes. For the second hidden layer use as input the $y^(1)_i$ etc.\\
 
 $^*$ non-linear $\sim$ $f(a x+ by)\neq af(x)+bf(y)$.
@@ -559,7 +582,7 @@ $^*$ non-linear $\sim$ $f(a x+ by)\neq af(x)+bf(y)$.
 
 \begin{frame}{Few more details}
 The choice of the function is important. In general \red{different functions for each layer}. 
-
+\pause
 Classical example:\\
 \begin{columns}
 \begin{column}{0.35\textwidth}
@@ -590,7 +613,22 @@ $ $  \newline
 
 \begin{frame}{But how to get results?}
 If weights and biases are given at random the results is garbage!\\
-We need a procedure to find a set of weights and biases such that the output is in line with what we want.
+We need a procedure to find a set of weights and biases such that the output is in line with what we want.\\
+$ $\\
+\red{Basic idea of gradient descend}:\\
+\pause
+1) define a function (loss function) that tell us how far away from data we are now: $\sim \sum (T_i - E_i)^2$\\
+\pause
+2) vary in turn all the parameters of the network: multidimensional `mountain-valley' picture \\
+\pause
+3) move in the direction in which the loss function decrease more rapidly
+\end{frame}
+
+\begin{frame}{Picture}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{Notes/Figures/gradient.pdf}
+\end{figure}
 \end{frame}
 
 
