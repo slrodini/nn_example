@@ -4,6 +4,7 @@
 /Code/lecture_1/*.dat
 /Code/*.elf
 /Code/*.o
+/Code/nn/*.out
 
 # LaTeX temporary files
 /Notes/*.aux

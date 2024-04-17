@@ -48,6 +48,12 @@ void multil_FullEvaluate(multilayer_t *net, double *x);
 inline double multil_get_grad(size_t out, size_t par, multilayer_t *net) { return net->parGrad[out * net->nPar + par]; }
 inline double multil_get(size_t out, multilayer_t *net) { return net->s_li[net->nL - 1][out]; }
 
+double loc_sigma(double x);
+double loc_sigma_d(double x);
+
+double loc_id(double x);
+double loc_id_d(double x);
+
 #endif
 
 #ifdef __cplusplus
